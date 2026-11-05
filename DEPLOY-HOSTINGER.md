@@ -13,7 +13,7 @@ The repo has no secrets: `.env` and `production.env` are git-ignored. So add the
 | `TOKEN_TTL` | `7d` |
 | `TZ_NAME` | `Asia/Kolkata` |
 
-Entry file `server.cjs`, build command `npm run build` (or empty). Every push to `main` redeploys.
+Entry file `server.js`, build command `npm run build` (or empty). Every push to `main` redeploys.
 
 ## hPanel Node.js app from a zip (Business / Cloud plans)
 
@@ -24,7 +24,7 @@ Entry file `server.cjs`, build command `npm run build` (or empty). Every push to
    | --- | --- |
    | Application type | Express |
    | Node.js version | 18, 20 or 22 (all work) |
-   | Entry file | **`server.cjs`** (works with Hostinger's runner; `server.js` / `src/index.js` may not) |
+   | Entry file | **`server.js`** (CommonJS, works with any runner; `server.cjs` also works, `src/index.js` does not) |
    | Install command | `npm install` |
    | Build command | `npm run build` (does nothing; there is no build step) — or leave empty |
    | Output directory | none |
@@ -35,7 +35,7 @@ Entry file `server.cjs`, build command `npm run build` (or empty). Every push to
 
 ## If you see 503 Service Unavailable
 
-- Entry file must be `server.cjs`.
+- Entry file must be `server.js` (not `src/index.js`).
 - Open the app's **Runtime logs** in hPanel. A healthy start prints `UTSAV API listening on port …` and then `MongoDB connected`.
 - Atlas → Network Access must allow the server (`0.0.0.0/0`).
 
