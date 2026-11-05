@@ -1,0 +1,1119 @@
+{
+  "categories": [
+    "Biryani & Rice",
+    "Chinese",
+    "Tandoori",
+    "Roti & Paratha",
+    "Tarka",
+    "Pizza",
+    "Burger",
+    "Pasta",
+    "Starters",
+    "Sandwiches & Wraps",
+    "Coffee",
+    "Shakes & Cold Drinks",
+    "Mocktails",
+    "Desserts",
+    "Breakfast"
+  ],
+  "menu": [
+    {
+      "id": "chicken-biryani",
+      "name": "Chicken Biryani",
+      "category": "Biryani & Rice",
+      "price": 180,
+      "image": "/uploads/seed/menu/chicken-biryani.webp",
+      "description": "Fragrant basmati layered with tender chicken, saffron and whole spices, slow cooked on dum.",
+      "isVeg": false,
+      "rating": 4.8,
+      "prepTime": "25 min",
+      "isPopular": true,
+      "spicy": 2
+    },
+    {
+      "id": "mutton-biryani",
+      "name": "Mutton Biryani",
+      "category": "Biryani & Rice",
+      "price": 260,
+      "image": "/uploads/seed/menu/mutton-biryani.webp",
+      "description": "Melt-in-the-mouth mutton and long-grain rice cooked together in a rich, aromatic masala.",
+      "isVeg": false,
+      "rating": 4.7,
+      "prepTime": "35 min",
+      "spicy": 2
+    },
+    {
+      "id": "egg-biryani",
+      "name": "Egg Biryani",
+      "category": "Biryani & Rice",
+      "price": 160,
+      "image": "/uploads/seed/menu/egg-biryani.webp",
+      "description": "Spiced basmati rice with boiled eggs tossed in a golden onion masala.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "20 min",
+      "spicy": 1
+    },
+    {
+      "id": "veg-biryani",
+      "name": "Veg Biryani",
+      "category": "Biryani & Rice",
+      "price": 150,
+      "image": "/uploads/seed/menu/veg-biryani.webp",
+      "description": "Seasonal vegetables and basmati rice with mint, fried onions and warm spices.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "20 min",
+      "spicy": 1
+    },
+    {
+      "id": "chicken-fried-rice",
+      "name": "Chicken Fried Rice",
+      "category": "Biryani & Rice",
+      "price": 160,
+      "image": "/uploads/seed/menu/fried-rice.webp",
+      "description": "Wok-tossed rice with chicken, egg, spring onions and soy.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "chilli-chicken-8-pcs",
+      "name": "Chilli Chicken (8 pcs)",
+      "category": "Chinese",
+      "price": 160,
+      "image": "/uploads/seed/menu/chilli-chicken.webp",
+      "description": "Crispy chicken tossed with green chillies, onions and capsicum in a tangy soy gravy.",
+      "isVeg": false,
+      "rating": 4.7,
+      "prepTime": "20 min",
+      "spicy": 3
+    },
+    {
+      "id": "chicken-manchurian-8-pcs",
+      "name": "Chicken Manchurian (8 pcs)",
+      "category": "Chinese",
+      "price": 170,
+      "image": "/uploads/seed/menu/chicken-gravy.webp",
+      "description": "Golden chicken dumplings in a savoury garlic and ginger Manchurian gravy.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "20 min",
+      "spicy": 2
+    },
+    {
+      "id": "hot-garlic-chicken-8-pcs",
+      "name": "Hot Garlic Chicken (8 pcs)",
+      "category": "Chinese",
+      "price": 180,
+      "image": "/uploads/seed/menu/chilli-chicken.webp",
+      "description": "Chicken in a fiery red sauce loaded with fried garlic.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "20 min",
+      "spicy": 3
+    },
+    {
+      "id": "schezwan-chicken-8-pcs",
+      "name": "Schezwan Chicken (8 pcs)",
+      "category": "Chinese",
+      "price": 180,
+      "image": "/uploads/seed/menu/schezwan-gravy.webp",
+      "description": "Bold, peppery Schezwan sauce coating tender pieces of chicken.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "20 min",
+      "spicy": 3
+    },
+    {
+      "id": "singapore-chicken-8-pcs",
+      "name": "Singapore Chicken (8 pcs)",
+      "category": "Chinese",
+      "price": 200,
+      "image": "/uploads/seed/menu/chicken-gravy.webp",
+      "description": "A mildly sweet and spicy gravy with curry notes and crunchy vegetables.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "20 min",
+      "spicy": 2
+    },
+    {
+      "id": "dry-chilli-chicken-8-pcs",
+      "name": "Dry Chilli Chicken (8 pcs)",
+      "category": "Chinese",
+      "price": 150,
+      "image": "/uploads/seed/menu/nuggets.webp",
+      "description": "The classic dry version: crisp, smoky and tossed in hot chilli and soy.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "18 min",
+      "spicy": 3
+    },
+    {
+      "id": "chicken-65-8-pcs",
+      "name": "Chicken 65 (8 pcs)",
+      "category": "Chinese",
+      "price": 200,
+      "image": "/uploads/seed/menu/chicken-65.webp",
+      "description": "Deep-fried chicken with curry leaves, red chilli and a hit of yoghurt tang.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "18 min",
+      "spicy": 3
+    },
+    {
+      "id": "chilli-fish-8-pcs",
+      "name": "Chilli Fish (8 pcs)",
+      "category": "Chinese",
+      "price": 240,
+      "image": "/uploads/seed/menu/fish-chilli.webp",
+      "description": "Boneless fish fillets in a spicy soy and green chilli gravy.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "22 min",
+      "spicy": 3
+    },
+    {
+      "id": "garlic-fish-8-pcs",
+      "name": "Garlic Fish (8 pcs)",
+      "category": "Chinese",
+      "price": 250,
+      "image": "/uploads/seed/menu/fish-garlic.webp",
+      "description": "Pan-seared fish in a buttery, garlicky Chinese-style sauce.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "22 min",
+      "spicy": 1
+    },
+    {
+      "id": "schezwan-fish-8-pcs",
+      "name": "Schezwan Fish (8 pcs)",
+      "category": "Chinese",
+      "price": 260,
+      "image": "/uploads/seed/menu/fish-chilli.webp",
+      "description": "Fish fillets simmered in a fiery house Schezwan gravy.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "22 min",
+      "spicy": 3
+    },
+    {
+      "id": "fish-65-8-pcs",
+      "name": "Fish 65 (8 pcs)",
+      "category": "Chinese",
+      "price": 250,
+      "image": "/uploads/seed/menu/fish-65.webp",
+      "description": "Crisp fried fish tempered with curry leaves and red chillies.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "20 min",
+      "spicy": 3
+    },
+    {
+      "id": "hakka-noodles",
+      "name": "Hakka Noodles",
+      "category": "Chinese",
+      "price": 140,
+      "image": "/uploads/seed/menu/hakka-noodles.webp",
+      "description": "Thin noodles stir-fried over high flame with crunchy vegetables.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "chilli-paneer",
+      "name": "Chilli Paneer",
+      "category": "Chinese",
+      "price": 170,
+      "image": "/uploads/seed/menu/chilli-paneer.webp",
+      "description": "Paneer cubes tossed with peppers and onions in a spicy soy glaze.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "18 min",
+      "spicy": 2
+    },
+    {
+      "id": "veg-manchurian",
+      "name": "Veg Manchurian",
+      "category": "Chinese",
+      "price": 150,
+      "image": "/uploads/seed/menu/manchurian.webp",
+      "description": "Vegetable balls in a dark, garlicky Manchurian sauce.",
+      "isVeg": true,
+      "rating": 4.2,
+      "prepTime": "18 min",
+      "spicy": 2
+    },
+    {
+      "id": "veg-momos",
+      "name": "Veg Momos",
+      "category": "Chinese",
+      "price": 100,
+      "image": "/uploads/seed/menu/momos-veg.webp",
+      "description": "Steamed dumplings stuffed with vegetables, served with red chutney.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "chicken-momos",
+      "name": "Chicken Momos",
+      "category": "Chinese",
+      "price": 120,
+      "image": "/uploads/seed/menu/momos-chicken.webp",
+      "description": "Juicy steamed chicken dumplings with hot momo chutney.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "tandoori-chicken-tikka-8-pcs",
+      "name": "Tandoori Chicken Tikka (8 pcs)",
+      "category": "Tandoori",
+      "price": 170,
+      "image": "/uploads/seed/menu/chicken-tikka.webp",
+      "description": "Boneless chicken marinated in yoghurt and spices, charred in the tandoor.",
+      "isVeg": false,
+      "rating": 4.7,
+      "prepTime": "25 min",
+      "spicy": 2
+    },
+    {
+      "id": "tandoori-hariyali-kebab-8-pcs",
+      "name": "Tandoori Hariyali Kebab (8 pcs)",
+      "category": "Tandoori",
+      "price": 180,
+      "image": "/uploads/seed/menu/hariyali-kabab.webp",
+      "description": "Chicken in a fresh mint and coriander marinade, grilled on skewers.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "25 min",
+      "spicy": 1
+    },
+    {
+      "id": "tandoori-chicken-half",
+      "name": "Tandoori Chicken (Half)",
+      "category": "Tandoori",
+      "price": 220,
+      "image": "/uploads/seed/menu/tandoori-chicken.webp",
+      "description": "Half a chicken in the classic red tandoori marinade, smoky and juicy.",
+      "isVeg": false,
+      "rating": 4.8,
+      "prepTime": "30 min",
+      "spicy": 2
+    },
+    {
+      "id": "tandoori-chicken-full",
+      "name": "Tandoori Chicken (Full)",
+      "category": "Tandoori",
+      "price": 400,
+      "image": "/uploads/seed/menu/tandoori-full.webp",
+      "description": "A whole chicken roasted in the tandoor. Made for sharing.",
+      "isVeg": false,
+      "rating": 4.8,
+      "prepTime": "40 min",
+      "spicy": 2
+    },
+    {
+      "id": "malai-tandoori-4-pcs",
+      "name": "Malai Tandoori (4 pcs)",
+      "category": "Tandoori",
+      "price": 250,
+      "image": "/uploads/seed/menu/malai-tandoori.webp",
+      "description": "Chicken in a mild cream and cheese marinade, kissed by the flame.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "30 min",
+      "spicy": 1
+    },
+    {
+      "id": "malai-tikka-6-pcs",
+      "name": "Malai Tikka (6 pcs)",
+      "category": "Tandoori",
+      "price": 220,
+      "image": "/uploads/seed/menu/malai-tikka.webp",
+      "description": "Creamy, melt-in-the-mouth boneless chicken tikka.",
+      "isVeg": false,
+      "rating": 4.7,
+      "prepTime": "25 min",
+      "spicy": 1
+    },
+    {
+      "id": "tandoori-drumstick-2-pcs",
+      "name": "Tandoori Drumstick (2 pcs)",
+      "category": "Tandoori",
+      "price": 190,
+      "image": "/uploads/seed/menu/tandoori-chicken.webp",
+      "description": "Chicken drumsticks with a spicy, charred tandoori crust.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "25 min",
+      "spicy": 2
+    },
+    {
+      "id": "reshmi-kebab-6-pcs",
+      "name": "Reshmi Kebab (6 pcs)",
+      "category": "Tandoori",
+      "price": 140,
+      "image": "/uploads/seed/menu/reshmi-kabab.webp",
+      "description": "Silky chicken kebabs with cashew, cream and gentle spices.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "22 min",
+      "spicy": 1
+    },
+    {
+      "id": "tandoori-roti",
+      "name": "Tandoori Roti",
+      "category": "Roti & Paratha",
+      "price": 10,
+      "image": "/uploads/seed/menu/tandoori-roti.webp",
+      "description": "Whole wheat bread baked fresh against the tandoor wall.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "8 min"
+    },
+    {
+      "id": "tandoori-naan",
+      "name": "Tandoori Naan",
+      "category": "Roti & Paratha",
+      "price": 15,
+      "image": "/uploads/seed/menu/tandoori-naan.webp",
+      "description": "Soft, leavened bread with charred blisters from the tandoor.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "8 min"
+    },
+    {
+      "id": "tandoori-butter-naan",
+      "name": "Tandoori Butter Naan",
+      "category": "Roti & Paratha",
+      "price": 20,
+      "image": "/uploads/seed/menu/butter-naan.webp",
+      "description": "Tandoor-baked naan brushed with melted butter.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "8 min"
+    },
+    {
+      "id": "tandoori-stuffed-kulcha",
+      "name": "Tandoori Stuffed Kulcha",
+      "category": "Roti & Paratha",
+      "price": 25,
+      "image": "/uploads/seed/menu/kulcha.webp",
+      "description": "Soft kulcha with a spiced filling, baked in the tandoor.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "10 min"
+    },
+    {
+      "id": "lachha-paratha",
+      "name": "Lachha Paratha",
+      "category": "Roti & Paratha",
+      "price": 20,
+      "image": "/uploads/seed/menu/lachha-paratha.webp",
+      "description": "Flaky, layered paratha crisped on the griddle.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "8 min"
+    },
+    {
+      "id": "rumali-roti",
+      "name": "Rumali Roti",
+      "category": "Roti & Paratha",
+      "price": 10,
+      "image": "/uploads/seed/menu/rumali-roti.webp",
+      "description": "Paper-thin, handkerchief-soft roti.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "veg-tarka",
+      "name": "Veg Tarka",
+      "category": "Tarka",
+      "price": 70,
+      "image": "/uploads/seed/menu/tarka-veg.webp",
+      "description": "Yellow dal finished with a sizzling tempering of garlic and red chilli. One plate.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "egg-tarka",
+      "name": "Egg Tarka",
+      "category": "Tarka",
+      "price": 80,
+      "image": "/uploads/seed/menu/tarka-egg.webp",
+      "description": "Dhaba-style tarka topped with scrambled egg. One plate.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "15 min",
+      "spicy": 1
+    },
+    {
+      "id": "egg-chicken-tarka",
+      "name": "Egg Chicken Tarka",
+      "category": "Tarka",
+      "price": 110,
+      "image": "/uploads/seed/menu/tarka-chicken.webp",
+      "description": "Hearty dal with egg and shredded chicken. One plate.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "18 min",
+      "spicy": 2
+    },
+    {
+      "id": "margherita-pizza",
+      "name": "Margherita Pizza",
+      "category": "Pizza",
+      "price": 220,
+      "image": "/uploads/seed/menu/margherita.webp",
+      "description": "San Marzano style tomato sauce, melted mozzarella and fresh basil.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "20 min",
+      "isPopular": true
+    },
+    {
+      "id": "farmhouse-pizza",
+      "name": "Farmhouse Pizza",
+      "category": "Pizza",
+      "price": 280,
+      "image": "/uploads/seed/menu/pizza-loaded.webp",
+      "description": "Loaded with onion, capsicum, tomato, mushroom and sweet corn.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "22 min"
+    },
+    {
+      "id": "chicken-tikka-pizza",
+      "name": "Chicken Tikka Pizza",
+      "category": "Pizza",
+      "price": 320,
+      "image": "/uploads/seed/menu/pizza-loaded.webp",
+      "description": "Smoky chicken tikka, onions and a drizzle of mint mayo.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "22 min",
+      "spicy": 1
+    },
+    {
+      "id": "paneer-makhani-pizza",
+      "name": "Paneer Makhani Pizza",
+      "category": "Pizza",
+      "price": 300,
+      "image": "/uploads/seed/menu/pizza-rustic.webp",
+      "description": "Paneer in creamy makhani sauce with capsicum and onions.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "22 min",
+      "spicy": 1
+    },
+    {
+      "id": "cheese-burst-pizza",
+      "name": "Cheese Burst Pizza",
+      "category": "Pizza",
+      "price": 340,
+      "image": "/uploads/seed/menu/pizza-rustic.webp",
+      "description": "A molten cheese-filled crust with a generous mozzarella topping.",
+      "isVeg": true,
+      "rating": 4.7,
+      "prepTime": "25 min",
+      "isNew": true
+    },
+    {
+      "id": "classic-burger",
+      "name": "Classic Burger",
+      "category": "Burger",
+      "price": 150,
+      "image": "/uploads/seed/menu/burger-classic.webp",
+      "description": "Grilled patty, lettuce, tomato, cheese and our house sauce in a toasted bun.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "15 min",
+      "isPopular": true
+    },
+    {
+      "id": "veg-burger",
+      "name": "Veg Burger",
+      "category": "Burger",
+      "price": 110,
+      "image": "/uploads/seed/menu/burger-veg.webp",
+      "description": "Crisp vegetable patty with fresh salad and creamy mayo.",
+      "isVeg": true,
+      "rating": 4.2,
+      "prepTime": "12 min"
+    },
+    {
+      "id": "chicken-zinger-burger",
+      "name": "Chicken Zinger Burger",
+      "category": "Burger",
+      "price": 170,
+      "image": "/uploads/seed/menu/burger-zinger.webp",
+      "description": "Crunchy spiced chicken fillet with lettuce and spicy mayo.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "15 min",
+      "spicy": 2
+    },
+    {
+      "id": "double-cheese-burger",
+      "name": "Double Cheese Burger",
+      "category": "Burger",
+      "price": 190,
+      "image": "/uploads/seed/menu/burger-double.webp",
+      "description": "Two patties, two slices of cheese, zero regrets.",
+      "isVeg": false,
+      "rating": 4.6,
+      "prepTime": "18 min"
+    },
+    {
+      "id": "veg-pasta",
+      "name": "Veg Pasta",
+      "category": "Pasta",
+      "price": 160,
+      "image": "/uploads/seed/menu/pasta-veg.webp",
+      "description": "Pasta tossed with garden vegetables, herbs and a light tomato sauce.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "18 min",
+      "isPopular": true
+    },
+    {
+      "id": "white-sauce-pasta",
+      "name": "White Sauce Pasta",
+      "category": "Pasta",
+      "price": 180,
+      "image": "/uploads/seed/menu/pasta-white.webp",
+      "description": "Creamy bechamel, parmesan and a hint of black pepper.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "18 min"
+    },
+    {
+      "id": "red-sauce-pasta",
+      "name": "Red Sauce Pasta",
+      "category": "Pasta",
+      "price": 170,
+      "image": "/uploads/seed/menu/pasta-red.webp",
+      "description": "Penne in a tangy tomato and garlic sauce with chilli flakes.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "18 min",
+      "spicy": 1
+    },
+    {
+      "id": "pink-sauce-chicken-pasta",
+      "name": "Pink Sauce Chicken Pasta",
+      "category": "Pasta",
+      "price": 210,
+      "image": "/uploads/seed/menu/pasta-pink.webp",
+      "description": "A rosy blend of tomato and cream with herbed chicken.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "20 min"
+    },
+    {
+      "id": "french-fries",
+      "name": "French Fries",
+      "category": "Starters",
+      "price": 90,
+      "image": "/uploads/seed/menu/fries.webp",
+      "description": "Golden, salted and crisp on the outside.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "10 min"
+    },
+    {
+      "id": "peri-peri-fries",
+      "name": "Peri Peri Fries",
+      "category": "Starters",
+      "price": 110,
+      "image": "/uploads/seed/menu/peri-fries.webp",
+      "description": "Our fries dusted with hot and tangy peri peri spice.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "10 min",
+      "spicy": 2
+    },
+    {
+      "id": "chicken-nuggets",
+      "name": "Chicken Nuggets",
+      "category": "Starters",
+      "price": 150,
+      "image": "/uploads/seed/menu/nuggets.webp",
+      "description": "Crispy bite-size chicken served with a dip.",
+      "isVeg": false,
+      "rating": 4.3,
+      "prepTime": "12 min"
+    },
+    {
+      "id": "paneer-tikka",
+      "name": "Paneer Tikka",
+      "category": "Starters",
+      "price": 200,
+      "image": "/uploads/seed/menu/paneer-tikka.webp",
+      "description": "Char-grilled paneer, peppers and onions in a spiced marinade.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "20 min",
+      "spicy": 2
+    },
+    {
+      "id": "club-sandwich",
+      "name": "Club Sandwich",
+      "category": "Sandwiches & Wraps",
+      "price": 150,
+      "image": "/uploads/seed/menu/sandwich.webp",
+      "description": "Triple-decker with chicken, egg, cheese and fresh salad.",
+      "isVeg": false,
+      "rating": 4.4,
+      "prepTime": "12 min"
+    },
+    {
+      "id": "grilled-veg-sandwich",
+      "name": "Grilled Veg Sandwich",
+      "category": "Sandwiches & Wraps",
+      "price": 120,
+      "image": "/uploads/seed/menu/sandwich.webp",
+      "description": "Toasted bread with cheese, vegetables and green chutney.",
+      "isVeg": true,
+      "rating": 4.2,
+      "prepTime": "10 min"
+    },
+    {
+      "id": "chicken-wrap",
+      "name": "Chicken Wrap",
+      "category": "Sandwiches & Wraps",
+      "price": 160,
+      "image": "/uploads/seed/menu/wrap.webp",
+      "description": "Spiced chicken, slaw and mint mayo rolled in a soft tortilla.",
+      "isVeg": false,
+      "rating": 4.5,
+      "prepTime": "12 min",
+      "spicy": 1
+    },
+    {
+      "id": "cappuccino",
+      "name": "Cappuccino",
+      "category": "Coffee",
+      "price": 110,
+      "image": "/uploads/seed/menu/cappuccino.webp",
+      "description": "Rich espresso under a thick cap of velvety foam.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "caf-latte",
+      "name": "Café Latte",
+      "category": "Coffee",
+      "price": 120,
+      "image": "/uploads/seed/menu/latte.webp",
+      "description": "Smooth espresso with plenty of steamed milk.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "espresso",
+      "name": "Espresso",
+      "category": "Coffee",
+      "price": 80,
+      "image": "/uploads/seed/menu/espresso.webp",
+      "description": "A short, intense shot of dark-roasted coffee.",
+      "isVeg": true,
+      "rating": 4.3,
+      "prepTime": "4 min"
+    },
+    {
+      "id": "hazelnut-coffee",
+      "name": "Hazelnut Coffee",
+      "category": "Coffee",
+      "price": 140,
+      "image": "/uploads/seed/menu/hazelnut.webp",
+      "description": "Latte with a nutty, sweet hazelnut syrup.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "6 min",
+      "isNew": true
+    },
+    {
+      "id": "masala-chai",
+      "name": "Masala Chai",
+      "category": "Coffee",
+      "price": 40,
+      "image": "/uploads/seed/menu/chai.webp",
+      "description": "Strong tea brewed with ginger, cardamom and warm spices.",
+      "isVeg": true,
+      "rating": 4.7,
+      "prepTime": "5 min"
+    },
+    {
+      "id": "cold-coffee",
+      "name": "Cold Coffee",
+      "category": "Shakes & Cold Drinks",
+      "price": 120,
+      "image": "/uploads/seed/menu/cold-coffee.webp",
+      "description": "Chilled coffee blended with milk and swirled with chocolate.",
+      "isVeg": true,
+      "rating": 4.7,
+      "prepTime": "6 min",
+      "isPopular": true
+    },
+    {
+      "id": "oreo-shake",
+      "name": "Oreo Shake",
+      "category": "Shakes & Cold Drinks",
+      "price": 150,
+      "image": "/uploads/seed/menu/oreo-shake.webp",
+      "description": "Thick vanilla shake blended with crushed Oreo cookies.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "kitkat-shake",
+      "name": "KitKat Shake",
+      "category": "Shakes & Cold Drinks",
+      "price": 160,
+      "image": "/uploads/seed/menu/kitkat-shake.webp",
+      "description": "Chocolate shake with KitKat crunch in every sip.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "mango-shake",
+      "name": "Mango Shake",
+      "category": "Shakes & Cold Drinks",
+      "price": 130,
+      "image": "/uploads/seed/menu/mango-shake.webp",
+      "description": "Sweet ripe mango blended with chilled milk.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "6 min"
+    },
+    {
+      "id": "virgin-mojito",
+      "name": "Virgin Mojito",
+      "category": "Mocktails",
+      "price": 120,
+      "image": "/uploads/seed/menu/mojito.webp",
+      "description": "Fresh mint, lime and soda over crushed ice.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "5 min"
+    },
+    {
+      "id": "blue-lagoon",
+      "name": "Blue Lagoon",
+      "category": "Mocktails",
+      "price": 130,
+      "image": "/uploads/seed/menu/blue-lagoon.webp",
+      "description": "A bright blue citrus cooler, served ice cold.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "5 min"
+    },
+    {
+      "id": "chocolate-dessert",
+      "name": "Chocolate Dessert",
+      "category": "Desserts",
+      "price": 130,
+      "image": "/uploads/seed/menu/chocolate-dessert.webp",
+      "description": "Rich chocolate cake with glossy ganache and a soft crumb.",
+      "isVeg": true,
+      "rating": 4.7,
+      "prepTime": "5 min",
+      "isPopular": true
+    },
+    {
+      "id": "brownie-with-ice-cream",
+      "name": "Brownie with Ice Cream",
+      "category": "Desserts",
+      "price": 150,
+      "image": "/uploads/seed/menu/brownie.webp",
+      "description": "A warm fudgy brownie topped with vanilla ice cream.",
+      "isVeg": true,
+      "rating": 4.7,
+      "prepTime": "8 min"
+    },
+    {
+      "id": "red-velvet-pastry",
+      "name": "Red Velvet Pastry",
+      "category": "Desserts",
+      "price": 110,
+      "image": "/uploads/seed/menu/red-velvet.webp",
+      "description": "Soft red velvet sponge with cream cheese frosting.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "5 min"
+    },
+    {
+      "id": "gulab-jamun",
+      "name": "Gulab Jamun",
+      "category": "Desserts",
+      "price": 70,
+      "image": "/uploads/seed/menu/gulab-jamun.webp",
+      "description": "Warm milk dumplings soaked in a rose-scented syrup.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "5 min"
+    },
+    {
+      "id": "cheesecake",
+      "name": "Cheesecake",
+      "category": "Desserts",
+      "price": 170,
+      "image": "/uploads/seed/menu/cheesecake.webp",
+      "description": "Creamy baked cheesecake with a berry topping.",
+      "isVeg": true,
+      "rating": 4.6,
+      "prepTime": "5 min",
+      "isNew": true
+    },
+    {
+      "id": "masala-omelette",
+      "name": "Masala Omelette",
+      "category": "Breakfast",
+      "price": 90,
+      "image": "/uploads/seed/menu/omelette.webp",
+      "description": "Fluffy eggs with onion, tomato, green chilli and coriander.",
+      "isVeg": false,
+      "rating": 4.3,
+      "prepTime": "10 min",
+      "spicy": 1
+    },
+    {
+      "id": "pancakes",
+      "name": "Pancakes",
+      "category": "Breakfast",
+      "price": 150,
+      "image": "/uploads/seed/menu/pancakes.webp",
+      "description": "A stack of soft pancakes with maple syrup and fresh fruit.",
+      "isVeg": true,
+      "rating": 4.4,
+      "prepTime": "12 min"
+    },
+    {
+      "id": "aloo-paratha",
+      "name": "Aloo Paratha",
+      "category": "Breakfast",
+      "price": 80,
+      "image": "/uploads/seed/menu/aloo-paratha.webp",
+      "description": "Griddled flatbread stuffed with spiced potato, served with butter.",
+      "isVeg": true,
+      "rating": 4.5,
+      "prepTime": "12 min"
+    }
+  ],
+  "offers": [
+    {
+      "code": "UTSAV20",
+      "title": "20% Off",
+      "description": "Get 20% off on orders above ₹499.",
+      "type": "percent",
+      "value": 20,
+      "minOrder": 499
+    },
+    {
+      "code": "FIRST50",
+      "title": "₹50 Off",
+      "description": "Flat ₹50 off on your first order.",
+      "type": "flat",
+      "value": 50,
+      "minOrder": 0,
+      "firstOrderOnly": true
+    },
+    {
+      "code": "FREEDEL",
+      "title": "Free Delivery",
+      "description": "No delivery charge on this order.",
+      "type": "delivery",
+      "value": 0,
+      "minOrder": 0
+    }
+  ],
+  "gallery": [
+    {
+      "src": "/uploads/seed/gallery/drums-of-heaven.webp",
+      "title": "Drums of Heaven",
+      "category": "Chinese",
+      "width": 817,
+      "height": 452
+    },
+    {
+      "src": "/uploads/seed/gallery/mughlai-aloo.webp",
+      "title": "Mughlai Paratha with Aloo",
+      "category": "Paratha & Curry",
+      "width": 900,
+      "height": 643
+    },
+    {
+      "src": "/uploads/seed/gallery/chilli-chicken.webp",
+      "title": "Chilli Chicken",
+      "category": "Chinese",
+      "width": 601,
+      "height": 601
+    },
+    {
+      "src": "/uploads/seed/gallery/fried-rice.webp",
+      "title": "Chicken Fried Rice",
+      "category": "Chinese",
+      "width": 401,
+      "height": 672
+    },
+    {
+      "src": "/uploads/seed/gallery/paratha-curry.webp",
+      "title": "Lachha Paratha & Curry",
+      "category": "Paratha & Curry",
+      "width": 1042,
+      "height": 529
+    },
+    {
+      "src": "/uploads/seed/gallery/fritters.webp",
+      "title": "Crispy Fritters",
+      "category": "Starters",
+      "width": 618,
+      "height": 611
+    },
+    {
+      "src": "/uploads/seed/gallery/lollipop.webp",
+      "title": "Chicken Lollipop",
+      "category": "Starters",
+      "width": 305,
+      "height": 659
+    },
+    {
+      "src": "/uploads/seed/gallery/mughlai.webp",
+      "title": "Mughlai Paratha",
+      "category": "Paratha & Curry",
+      "width": 600,
+      "height": 480
+    },
+    {
+      "src": "/uploads/seed/gallery/fingers.webp",
+      "title": "Crispy Fingers",
+      "category": "Starters",
+      "width": 509,
+      "height": 575
+    },
+    {
+      "src": "/uploads/seed/gallery/cutlet.webp",
+      "title": "Crumb-Fried Cutlet",
+      "category": "Starters",
+      "width": 602,
+      "height": 611
+    },
+    {
+      "src": "/uploads/seed/gallery/momos-soup.webp",
+      "title": "Momos & Soup",
+      "category": "Chinese",
+      "width": 330,
+      "height": 206
+    },
+    {
+      "src": "/uploads/seed/gallery/salad.webp",
+      "title": "Fresh Green Salad",
+      "category": "Starters",
+      "width": 555,
+      "height": 629
+    },
+    {
+      "src": "/uploads/seed/gallery/kebab-platter.webp",
+      "title": "Kebab Platter",
+      "category": "Starters",
+      "width": 264,
+      "height": 238
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Suchitra Nandi",
+      "rating": 5,
+      "quote": "Really amazing, this is the first time I have tasted food at Utsav Restaurant. The ambiance here is very nice and clean. The food here is very tasty and the service is also very good. You all must come here.🙏"
+    },
+    {
+      "name": "Prantick Karar",
+      "rating": 5,
+      "quote": "Good family restaurant in the locality. Perfect place for small event like birthday celebration among friends. Food quality and taste both are good. Well behaved staff and owner."
+    },
+    {
+      "name": "Paban Yt",
+      "rating": 5,
+      "quote": "What a find! This small local spot has unmatched service and the signature steak melted in our mouths. Definitely worth the visit"
+    },
+    {
+      "name": "Arpita Nandy",
+      "rating": 5,
+      "quote": "Food quality and taste is too good 👍. Affordable food prices good staff service and amazing atmospere 👌"
+    },
+    {
+      "name": "Sagar Mondal",
+      "rating": 5,
+      "quote": "Very good quality and quantity of all foods."
+    },
+    {
+      "name": "Pachhal Pradip",
+      "rating": 5,
+      "quote": "Well food quality & ambience 👌 Need more modification & customized 🙂 Happy to have their delicious dishes 😍😋🥰"
+    }
+  ],
+  "notifications": [
+    {
+      "title": "Flat 20% off this weekend",
+      "body": "Use code UTSAV20 on orders above ₹499."
+    },
+    {
+      "title": "Your first order is on us",
+      "body": "Use FIRST50 for ₹50 off your first order."
+    }
+  ],
+  "slides": [
+    {
+      "image": "/uploads/seed/hero/dish-biryani-cut.webp",
+      "alt": "Chicken biryani in a brass bowl",
+      "steam": true,
+      "cutout": true
+    },
+    {
+      "image": "/uploads/seed/hero/dish-pizza.webp",
+      "alt": "Wood-fired pizza on a dark table",
+      "steam": false,
+      "cutout": false
+    },
+    {
+      "image": "/uploads/seed/hero/dish-dessert-cut.webp",
+      "alt": "Ice cream dessert with caramel sauce",
+      "steam": false,
+      "cutout": true
+    }
+  ],
+  "site": {
+    "name": "UTSAV Cafe & Restaurant",
+    "tagline": "Good Food • Great Mood • Together Always",
+    "address": "Maju Rd, Dakshin Maju, Maju, West Bengal 711414, India",
+    "landmark": "Near Maju Central Crossing",
+    "phone": "09434154011",
+    "days": "Monday – Sunday (All 7 Days)",
+    "hours": "11:30 AM – 10:30 PM",
+    "services": "Continuous Dine-in & Takeaway",
+    "googleRating": 4.6,
+    "googleReviews": 55,
+    "mapLink": "https://maps.app.goo.gl/NE7b5wePNsvubKeU8?g_st=awb",
+    "mapEmbed": "https://www.google.com/maps?q=Utsav,+Maju+Rd,+Dakshin+Maju,+Maju,+West+Bengal+711414&output=embed",
+    "social": {
+      "facebook": "https://www.facebook.com/",
+      "instagram": "https://www.instagram.com/",
+      "youtube": "https://www.youtube.com/",
+      "google": "https://maps.app.goo.gl/NE7b5wePNsvubKeU8?g_st=awb"
+    }
+  }
+}
