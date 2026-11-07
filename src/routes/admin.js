@@ -116,7 +116,7 @@ r.delete(
 r.use(
   '/categories',
   admin,
-  crud({ collection: 'categories', fields: { name: ['str', { required: true, max: 60 }], image: ['str', { max: 300 }], active: ['bool', { def: true }] }, onChange: contentChanged }),
+  crud({ collection: 'categories', fields: { name: ['str', { required: true, max: 60 }], image: ['str', { max: 300 }], active: ['bool', { def: true }], home: ['bool', { def: true }] }, onChange: contentChanged }),
 )
 
 // ---- Website content ----------------------------------------------------------
@@ -139,7 +139,12 @@ r.use(
       type: ['enum', { values: ['percent', 'flat', 'delivery'], def: 'percent' }],
       value: ['int', { min: 0, max: 100000 }],
       minOrder: ['int', { min: 0, max: 100000 }],
+      maxDiscount: ['int', { min: 0, max: 100000 }],
       firstOrderOnly: ['bool'],
+      validFrom: ['date'],
+      validTo: ['date'],
+      featured: ['bool', { def: true }],
+      terms: ['str', { max: 300 }],
       active: ['bool', { def: true }],
     },
     onChange: contentChanged,

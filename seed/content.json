@@ -1079,25 +1079,37 @@
   "slides": [
     {
       "image": "/uploads/seed/hero/dish-biryani-cut.webp",
-      "alt": "Chicken biryani in a brass bowl",
+      "alt": "Chicken Biryani",
       "steam": true,
       "cutout": true
     },
     {
-      "image": "/uploads/seed/hero/dish-pizza.webp",
-      "alt": "Wood-fired pizza on a dark table",
+      "image": "/uploads/seed/menu/chicken-gravy.webp",
+      "alt": "Chicken Kosha",
+      "steam": true,
+      "cutout": false
+    },
+    {
+      "image": "/uploads/seed/menu/tandoori-chicken.webp",
+      "alt": "Tandoori Chicken",
       "steam": false,
       "cutout": false
     },
     {
-      "image": "/uploads/seed/hero/dish-dessert-cut.webp",
-      "alt": "Ice cream dessert with caramel sauce",
+      "image": "/uploads/seed/menu/tandoori-roti.webp",
+      "alt": "Tandoori Roti",
       "steam": false,
-      "cutout": true
+      "cutout": false
+    },
+    {
+      "image": "/uploads/seed/menu/mutton-biryani.webp",
+      "alt": "Mutton Biryani",
+      "steam": true,
+      "cutout": false
     }
   ],
   "site": {
-    "name": "UTSAV Cafe & Restaurant",
+    "name": "UTSAV Family Restaurant",
     "tagline": "Good Food • Great Mood • Together Always",
     "address": "Maju Rd, Dakshin Maju, Maju, West Bengal 711414, India",
     "landmark": "Near Maju Central Crossing",

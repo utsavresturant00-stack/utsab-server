@@ -1,6 +1,6 @@
 import { clean, col, nextId } from './db.js'
 import { broadcast } from './events.js'
-import { fail, getSettings, newTicket, newToken } from './util.js'
+import { fail, getSettings, newTicket, newToken, offerRunning } from './util.js'
 
 export const MODES = ['Delivery', 'Takeaway', 'Dine-in']
 
@@ -93,7 +93,7 @@ export const priceOrder = async ({ lines, mode, coupon, phone }) => {
   let offer = null
   if (coupon) {
     offer = await col('offers').findOne({ code: String(coupon).trim().toUpperCase(), active: true })
-    if (!offer) fail(400, 'This coupon is not available')
+    if (!offer || !offerRunning(offer)) fail(400, 'This coupon is not available right now')
     if (subtotal < offer.minOrder) fail(400, `${offer.code} needs an order of ₹${offer.minOrder} or more`)
     if (offer.firstOrderOnly && phone && (await col('orders').countDocuments({ phone, cancelled: false }, { limit: 1 }))) {
       fail(400, `${offer.code} is for a first order only`)
@@ -102,6 +102,7 @@ export const priceOrder = async ({ lines, mode, coupon, phone }) => {
 
   let discount = 0
   if (offer?.type === 'percent') discount = Math.round((subtotal * offer.value) / 100)
+  if (offer?.type === 'percent' && offer.maxDiscount > 0) discount = Math.min(discount, offer.maxDiscount)
   if (offer?.type === 'flat') discount = Math.min(offer.value, subtotal)
   const gst = Math.round(((subtotal - discount) * settings.gstRate) / 100)
   const freeDelivery = mode !== 'Delivery' || subtotal > settings.freeDeliveryAbove || offer?.type === 'delivery'
@@ -111,7 +112,7 @@ export const priceOrder = async ({ lines, mode, coupon, phone }) => {
 }
 
 /** Saves a new order and tells the staff panels. */
-export const createOrder = async (data) => {
+export const createOrder = async (data, { done = false } = {}) => {
   const now = Date.now()
   const id = await nextId('orders')
   const doc = {
@@ -134,6 +135,13 @@ export const createOrder = async (data) => {
     paidAt: null,
     demo: false,
     createdAt: now,
+  }
+  // A bill made at the counter is already served: it never shows in the kitchen.
+  if (done) {
+    doc.step = 3
+    doc.stepAt = [now, now, now, now]
+    doc.paid = !!data.paid
+    doc.paidAt = data.paid ? now : null
   }
   await col('orders').insertOne(doc)
   const order = clean(doc)
@@ -159,4 +167,41 @@ export const cancelOrder = (row) => {
   if (row.cancelled) return row
   if (row.step >= 3) fail(409, 'A finished order cannot be cancelled')
   return updateOrder(row, { cancelled: true, cancelledAt: Date.now() })
+}
+
+// ---- Bills edited by hand (invoices) ---------------------------------------------
+
+/** Checks lines typed into an invoice. Dishes may come from the menu or be written in. */
+export const cleanLines = (lines) => {
+  if (!Array.isArray(lines) || !lines.length) fail(400, 'Add at least one item')
+  if (lines.length > 100) fail(400, 'Too many items on one bill')
+  return lines.map((l, i) => {
+    const name = String(l?.name ?? '').trim().slice(0, 100)
+    const qty = Number(l?.qty)
+    const price = Number(l?.price)
+    if (!name) fail(400, `Item ${i + 1} needs a name`)
+    if (!Number.isInteger(qty) || qty < 1 || qty > 999) fail(400, `${name}: quantity must be 1 to 999`)
+    if (!Number.isFinite(price) || price < 0 || price > 1_000_000) fail(400, `${name}: enter a valid rate`)
+    return {
+      itemId: String(l.itemId ?? '').slice(0, 100),
+      name,
+      image: String(l.image ?? '').slice(0, 300),
+      isVeg: !!l.isVeg,
+      price: Math.round(price * 100) / 100,
+      qty,
+      note: String(l.note ?? '').trim().slice(0, 140),
+    }
+  })
+}
+
+const money = (n) => Math.round(n * 100) / 100
+
+/** Totals for a hand-made bill. GST is worked out on the amount after discount. */
+export const billTotals = (lines, { discount = 0, delivery = 0, gstRate = 5 }) => {
+  const subtotal = money(lines.reduce((s, l) => s + l.price * l.qty, 0))
+  const d = Math.min(Math.max(0, Number(discount) || 0), subtotal)
+  const del = Math.max(0, Number(delivery) || 0)
+  const rate = Math.min(Math.max(0, Number(gstRate) || 0), 28)
+  const gst = Math.round(((subtotal - d) * rate) / 100)
+  return { subtotal, discount: money(d), gst, delivery: money(del), total: Math.round(subtotal - d + gst + del), gstRate: rate }
 }

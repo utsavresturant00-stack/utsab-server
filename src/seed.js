@@ -150,3 +150,58 @@ export const seed = async ({ log = false } = {}) => {
 
   if (log || done.length) console.log(done.length ? `Seeded: ${done.join(', ')}` : 'Database already seeded, nothing to add.')
 }
+
+// ---- One-time switch from "Cafe & Restaurant" to a restaurant-only site ---------
+
+const OLD = {
+  logo: '/uploads/seed/brand/logo.png',
+  logoIcon: '/uploads/seed/brand/logo-cup.png',
+  logoSplash: '/uploads/seed/brand/logo-splash.png',
+  heroBackground: '/uploads/seed/hero/cafe-bg.webp',
+}
+const NOT_ON_HOME = ['Pizza', 'Burger', 'Pasta', 'Sandwiches & Wraps', 'Coffee', 'Shakes & Cold Drinks', 'Mocktails', 'Desserts', 'Breakfast']
+
+/**
+ * Runs once per database. It only changes values still at the old defaults, so anything the owner
+ * set by hand (their own logo, photos or name) is left alone.
+ */
+export const migrateToRestaurant = async () => {
+  const key = 'migration:restaurant-v1'
+  if (await col('meta').findOne({ _id: key })) return
+  const done = []
+
+  const s = (await col('settings').findOne({ _id: 'site' })) ?? {}
+  const set = {}
+  if (typeof s.name === 'string' && /cafe/i.test(s.name)) {
+    set.name = s.name === 'UTSAV Cafe & Restaurant' ? 'UTSAV Family Restaurant' : s.name.replace(/\s*caf[eé]\s*(&|and)?\s*/gi, ' ').replace(/\s+/g, ' ').trim()
+  }
+  if (!s.logo || s.logo === OLD.logo) set.logo = '/uploads/seed/brand/utsav-logo.png'
+  if (!s.logoIcon || s.logoIcon === OLD.logoIcon) set.logoIcon = '/uploads/seed/brand/utsav-mark.png'
+  if (!s.logoSplash || s.logoSplash === OLD.logoSplash) set.logoSplash = '/uploads/seed/brand/utsav-splash.png'
+  if (!s.heroBackground || s.heroBackground === OLD.heroBackground) set.heroBackground = '/uploads/seed/ambience/kitchen.webp'
+  if (Object.keys(set).length) {
+    await col('settings').updateOne({ _id: 'site' }, { $set: set }, { upsert: true })
+    done.push(`settings (${Object.keys(set).join(', ')})`)
+  }
+
+  // Home page dishes: pizza and ice cream off, restaurant dishes on.
+  const off = await col('slides').updateMany({ image: /dish-pizza|dish-dessert/, active: true }, { $set: { active: false } })
+  if (off.modifiedCount) done.push(`${off.modifiedCount} cafe slides hidden`)
+  await col('slides').updateMany({ image: /dish-biryani-cut/, alt: /brass bowl/i }, { $set: { alt: 'Chicken Biryani' } })
+  const content = JSON.parse(readFileSync(join(config.seedDir, 'content.json'), 'utf8'))
+  let sort = ((await col('slides').find().sort({ sort: -1 }).limit(1).next())?.sort ?? -1) + 1
+  for (const slide of content.slides) {
+    if (await col('slides').findOne({ image: slide.image })) continue
+    await col('slides').insertOne({ ...slide, active: true, id: await nextId('slides'), sort: sort++ })
+    done.push(`slide ${slide.alt}`)
+  }
+
+  // Categories decide what the home page shows; the full menu keeps every dish.
+  for (const c of await col('categories').find({ home: { $exists: false } }).toArray()) {
+    await col('categories').updateOne({ _id: c._id }, { $set: { home: !NOT_ON_HOME.includes(c.name) } })
+  }
+  await col('offers').updateMany({ featured: { $exists: false } }, { $set: { featured: true } })
+
+  await col('meta').insertOne({ _id: key, at: Date.now() })
+  console.log(`Restaurant update applied: ${done.join(', ') || 'nothing to change'}`)
+}

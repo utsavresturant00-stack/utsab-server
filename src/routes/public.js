@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { col } from '../db.js'
 import { cancelOrder, createOrder, findOrder, MODES, present, presentMany, priceOrder } from '../orders.js'
-import { fail, getSettings, pick, route } from '../util.js'
+import { fail, getSettings, offerRunning, pick, route } from '../util.js'
 
 const r = Router()
 const list = (name, filter = {}, sort = { sort: 1, id: 1 }, projection = {}) => col(name).find(filter, { projection: { _id: 0, ...projection } }).sort(sort).toArray()
@@ -10,15 +10,15 @@ const list = (name, filter = {}, sort = { sort: 1, id: 1 }, projection = {}) => 
 export const siteContent = async () => {
   const [settings, categories, menu, offers, gallery, slides, testimonials, notifications] = await Promise.all([
     getSettings(),
-    list('categories', { active: true }, { sort: 1, id: 1 }, { id: 0, sort: 0, active: 0 }),
+    list('categories', { active: true }, { sort: 1, id: 1 }, { id: 0, sort: 0, active: 0 }).then((cs) => cs.map((c) => ({ ...c, home: c.home !== false }))),
     list('menu', {}, { sort: 1, name: 1 }),
-    list('offers', { active: true }, { sort: 1 }, { active: 0, sort: 0 }),
+    list('offers', { active: true }, { sort: 1 }, { sort: 0 }),
     list('gallery', {}, { sort: 1, id: 1 }, { id: 0, sort: 0 }),
     list('slides', { active: true }, { sort: 1, id: 1 }, { id: 0, sort: 0, active: 0 }),
     list('testimonials', { active: true }, { sort: 1, id: 1 }, { id: 0, sort: 0, active: 0 }),
     list('notifications', { active: true }, { createdAt: -1 }, { active: 0 }),
   ])
-  return { settings, categories, menu, offers, gallery, slides, testimonials, notifications, updatedAt: Date.now() }
+  return { settings, categories, menu, offers: offers.filter(offerRunning).map(({ active, ...o }) => o), gallery, slides, testimonials, notifications, updatedAt: Date.now() }
 }
 
 r.get(

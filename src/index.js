@@ -8,7 +8,7 @@ import adminRoutes from './routes/admin.js'
 import authRoutes from './routes/auth.js'
 import publicRoutes from './routes/public.js'
 import staffRoutes from './routes/staff.js'
-import { seed } from './seed.js'
+import { migrateToRestaurant, seed } from './seed.js'
 
 // The server starts listening at once and connects to MongoDB in the background, retrying until it works.
 // Hosts that wait for the port (Hostinger, Passenger) see the app as up straight away, and /api/health
@@ -40,6 +40,11 @@ const start = async () => {
     await seed()
   } catch (e) {
     console.error('Seeding skipped:', e?.message ?? e)
+  }
+  try {
+    await migrateToRestaurant()
+  } catch (e) {
+    console.error('Restaurant update skipped:', e?.message ?? e)
   }
 }
 

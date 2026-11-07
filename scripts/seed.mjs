@@ -3,7 +3,7 @@
 //   npm run seed -- --reset wipe content collections and photos first, then seed fresh
 //                           (orders, invoices and staff accounts are kept)
 import { client, col, connect, db } from '../src/db.js'
-import { seed } from '../src/seed.js'
+import { migrateToRestaurant, seed } from '../src/seed.js'
 
 await connect()
 
@@ -19,6 +19,7 @@ if (process.argv.includes('--reset')) {
 }
 
 await seed({ log: true })
+await migrateToRestaurant()
 
 const names = ['settings', 'users', 'categories', 'menu', 'offers', 'gallery', 'slides', 'testimonials', 'notifications', 'tables', 'orders', 'invoices', 'media.files']
 const counts = await Promise.all(names.map(async (n) => [n, await col(n).countDocuments()]))

@@ -40,5 +40,5 @@ writeFileSync(new URL('content.json', out), JSON.stringify(content, null, 2))
 
 for (const dir of ['menu', 'gallery', 'hero', 'ambience']) cpSync(new URL(`public/images/${dir}`, client), new URL(`media/${dir}`, out), { recursive: true })
 mkdirSync(new URL('media/brand', out), { recursive: true })
-for (const f of ['logo.png', 'logo-word.png', 'logo-cup.png', 'logo-splash.png']) cpSync(new URL(`public/${f}`, client), new URL(`media/brand/${f}`, out))
+for (const f of ['utsav-logo.png', 'logo-word.png', 'utsav-mark.png', 'utsav-splash.png']) cpSync(new URL(`public/${f}`, client), new URL(`media/brand/${f}`, out))
 console.log(`seed: ${content.menu.length} dishes, ${content.gallery.length} photos, ${content.offers.length} offers`)

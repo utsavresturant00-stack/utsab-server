@@ -3,8 +3,8 @@ import { requireAuth } from '../auth.js'
 import { config } from '../config.js'
 import { col, isDuplicate, nextId } from '../db.js'
 import { broadcast, subscribe } from '../events.js'
-import { cancelOrder, createOrder, findOrder, MODES, present, presentMany, priceOrder, setStep, updateOrder } from '../orders.js'
-import { fail, getSettings, pick, route } from '../util.js'
+import { billTotals, cancelOrder, cleanLines, createOrder, findOrder, MODES, present, presentMany, priceOrder, setStep, updateOrder } from '../orders.js'
+import { allow, fail, getSettings, getWaiterPermissions, pick, route, saveWaiterPermissions } from '../util.js'
 
 const r = Router()
 const staff = requireAuth('admin', 'waiter')
@@ -17,6 +17,20 @@ r.get('/events', (req, res, next) => {
   req.headers.authorization = `Bearer ${req.query.token ?? ''}`
   staff(req, res, (err) => (err ? next(err) : subscribe(req, res)))
 })
+
+// ---- Waiter panel permissions ---------------------------------------------------
+
+r.get('/waiter/permissions', staff, route(async (_req, res) => res.json(await getWaiterPermissions())))
+
+r.put(
+  '/waiter/permissions',
+  admin,
+  route(async (req, res) => {
+    const out = await saveWaiterPermissions(req.body)
+    broadcast('permissions', out)
+    res.json(out)
+  }),
+)
 
 // ---- Orders -----------------------------------------------------------------
 
@@ -91,6 +105,11 @@ r.post(
       payment: ['enum', { values: ['Cash', 'UPI', 'Card', 'Pay at Counter'], def: 'Pay at Counter' }],
       coupon: ['str', { max: 30 }],
     })
+    if (req.user.role === 'waiter') {
+      const can = await getWaiterPermissions()
+      if (body.mode === 'Dine-in' && !can.takeDineIn) fail(403, 'The admin has turned off table orders for waiters')
+      if (body.mode !== 'Dine-in' && !can.takeTakeaway) fail(403, 'The admin has turned off takeaway orders for waiters')
+    }
     let table = null
     if (body.mode === 'Dine-in') table = (await col('tables').findOne({ id: body.tableId, active: true })) ?? fail(400, 'Choose a table')
     if (table?.reserved) fail(409, `Table ${table.number} is reserved. Release the reservation when the guests arrive, then take the order.`)
@@ -113,7 +132,10 @@ r.patch(
   staff,
   route(async (req, res) => {
     const row = (await findOrder(req.params.id)) ?? fail(404, 'Order not found')
-    res.json(await present(await setStep(row, Number(req.body.step)), { staff: true }))
+    const step = Number(req.body.step)
+    // Without kitchen access a waiter can still mark food served once it is ready.
+    if (req.user.role === 'waiter' && !(step === 3 && row.step === 2) && !(await getWaiterPermissions()).kitchenSteps) fail(403, 'The admin has turned off kitchen steps for waiters')
+    res.json(await present(await setStep(row, step), { staff: true }))
   }),
 )
 
@@ -129,6 +151,7 @@ r.post(
 r.patch(
   '/orders/:id/payment',
   staff,
+  allow('markPaid'),
   route(async (req, res) => {
     const row = (await findOrder(req.params.id)) ?? fail(404, 'Order not found')
     if (row.cancelled) fail(409, 'This order is cancelled')
@@ -139,48 +162,194 @@ r.patch(
 
 // ---- Invoices ---------------------------------------------------------------
 
-const presentInvoice = (inv) => inv && { id: inv.id, number: inv.number, createdAt: inv.createdAt, ...inv.data }
+const presentInvoice = (inv) =>
+  inv && {
+    id: inv.id,
+    number: inv.number,
+    createdAt: inv.createdAt,
+    revision: inv.revision ?? 0,
+    updatedAt: inv.updatedAt ?? null,
+    updatedBy: inv.updatedBy ?? null,
+    customerGstin: '',
+    notes: '',
+    ...inv.data,
+  }
+
+/** Gives an order its invoice, numbered per prefix and year. Returns the existing one if it has one. */
+const makeInvoice = async (row, user, extra = {}) => {
+  const existing = await col('invoices').findOne({ orderId: row.id })
+  if (existing) return { inv: existing, created: false }
+  const s = await getSettings()
+  const prefix = `${s.invoicePrefix || 'INV'}-${new Date().getFullYear()}-`
+  const data = {
+    business: { name: s.name, address: s.address, phone: s.phone, email: s.email, gstin: s.gstin, fssai: s.fssai, logo: s.logo },
+    gstRate: extra.gstRate ?? s.gstRate,
+    footer: s.invoiceFooter,
+    issuedBy: user.name,
+    customerGstin: extra.customerGstin ?? '',
+    notes: extra.notes ?? '',
+    order: await present(row, { staff: true }),
+  }
+  // A clash from two people at once just takes the next number.
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const n = await nextId(`invoice:${prefix}`)
+    const inv = { id: await nextId('invoices'), number: `${prefix}${String(n).padStart(4, '0')}`, orderId: row.id, data, revision: 0, createdBy: user.id, createdAt: Date.now() }
+    try {
+      await col('invoices').insertOne(inv)
+      broadcast('order', { type: 'updated', order: await present(row, { staff: true }) })
+      return { inv, created: true }
+    } catch (e) {
+      if (!isDuplicate(e)) throw e
+      const made = await col('invoices').findOne({ orderId: row.id })
+      if (made) return { inv: made, created: false }
+    }
+  }
+  fail(409, 'Could not number the invoice, please try again')
+}
+
+/** Payment can change after the invoice is made, so it is read fresh from the order. */
+const withPayment = async (inv) => {
+  const out = presentInvoice(inv)
+  const o = await col('orders').findOne({ id: inv.orderId }, { projection: { paid: 1, paidAt: 1, payment: 1 } })
+  if (o) out.order = { ...out.order, paid: !!o.paid, paidAt: o.paidAt, payment: o.payment }
+  return out
+}
+
+const billFields = {
+  name: ['str', { max: 80 }],
+  phone: ['str', { max: 15 }],
+  address: ['str', { max: 300 }],
+  customerGstin: ['str', { max: 20 }],
+  notes: ['str', { max: 400 }],
+  payment: ['str', { max: 30, def: 'Cash' }],
+  paid: ['bool'],
+  discount: ['num', { min: 0, max: 1_000_000 }],
+  delivery: ['num', { min: 0, max: 100_000 }],
+  gstRate: ['num', { min: 0, max: 28 }],
+}
 
 /** Makes the invoice for an order, or returns the one already made. */
 r.post(
   '/orders/:id/invoice',
   staff,
+  allow('createInvoice'),
   route(async (req, res) => {
     const row = (await findOrder(req.params.id)) ?? fail(404, 'Order not found')
     if (row.cancelled) fail(409, 'A cancelled order cannot be invoiced')
-    const existing = await col('invoices').findOne({ orderId: row.id })
-    if (existing) return res.json(presentInvoice(existing))
+    const { inv, created } = await makeInvoice(row, req.user)
+    res.status(created ? 201 : 200).json(await withPayment(inv))
+  }),
+)
 
+/** A new bill typed in by hand (counter sale, phone order, catering): saved as a finished order with its invoice. */
+r.post(
+  '/invoices',
+  staff,
+  allow('createInvoice'),
+  route(async (req, res) => {
+    const b = pick(req.body, { ...billFields, mode: ['enum', { values: MODES, def: 'Takeaway' }], tableId: ['int', { min: 1 }] })
     const s = await getSettings()
-    const prefix = `${s.invoicePrefix || 'INV'}-${new Date().getFullYear()}-`
-    const data = {
-      business: { name: s.name, address: s.address, phone: s.phone, email: s.email, gstin: s.gstin, fssai: s.fssai, logo: s.logo },
-      gstRate: s.gstRate,
-      footer: s.invoiceFooter,
-      issuedBy: req.user.name,
-      order: await present(row, { staff: true }),
+    const lines = cleanLines(req.body.lines)
+    const t = billTotals(lines, { discount: b.discount, delivery: b.delivery, gstRate: req.body.gstRate === undefined || req.body.gstRate === '' ? s.gstRate : b.gstRate })
+    const table = b.mode === 'Dine-in' && b.tableId ? await col('tables').findOne({ id: b.tableId }) : null
+    const row = await createOrder(
+      {
+        mode: b.mode,
+        name: b.name || 'Walk-in',
+        phone: b.phone,
+        address: b.address,
+        note: '',
+        payment: b.payment || 'Cash',
+        coupon: null,
+        lines,
+        subtotal: t.subtotal,
+        discount: t.discount,
+        gst: t.gst,
+        delivery: t.delivery,
+        total: t.total,
+        paid: b.paid,
+        source: req.user.role === 'waiter' ? 'waiter' : 'counter',
+        tableId: table?.id ?? null,
+        tableNo: table?.number ?? null,
+        waiterId: req.user.id,
+      },
+      { done: true },
+    )
+    const { inv } = await makeInvoice(row, req.user, { gstRate: t.gstRate, customerGstin: b.customerGstin, notes: b.notes })
+    res.status(201).json(await withPayment(inv))
+  }),
+)
+
+/** Edits a saved invoice. The order behind it is updated too, so reports match the bill. */
+r.put(
+  '/invoices/:id',
+  staff,
+  allow('editInvoice'),
+  route(async (req, res) => {
+    const inv = (await col('invoices').findOne({ id: Number(req.params.id) })) ?? fail(404, 'Invoice not found')
+    const o = inv.data.order
+    const b = pick(req.body, billFields, { partial: true })
+    const lines = req.body.lines === undefined ? o.lines : cleanLines(req.body.lines)
+    const t = billTotals(lines, { discount: b.discount ?? o.discount, delivery: b.delivery ?? o.delivery, gstRate: b.gstRate ?? inv.data.gstRate })
+    const row = await col('orders').findOne({ id: inv.orderId }, { projection: { _id: 0 } })
+    const wasPaid = row ? !!row.paid : !!o.paid
+    const paid = b.paid ?? wasPaid
+    const now = Date.now()
+    const paidAt = paid ? (row?.paidAt ?? o.paidAt ?? now) : null
+    const order = {
+      ...o,
+      name: b.name ?? o.name,
+      phone: b.phone ?? o.phone,
+      address: b.address ?? o.address,
+      payment: b.payment ?? row?.payment ?? o.payment,
+      paid,
+      paidAt,
+      lines,
+      subtotal: t.subtotal,
+      discount: t.discount,
+      gst: t.gst,
+      delivery: t.delivery,
+      total: t.total,
     }
-    // Numbers run on per prefix and year; a clash from two people at once just takes the next one.
-    for (let attempt = 0; attempt < 5; attempt++) {
-      const n = await nextId(`invoice:${prefix}`)
-      const inv = { id: await nextId('invoices'), number: `${prefix}${String(n).padStart(4, '0')}`, orderId: row.id, data, createdBy: req.user.id, createdAt: Date.now() }
-      try {
-        await col('invoices').insertOne(inv)
-        broadcast('order', { type: 'updated', order: await present(row, { staff: true }) })
-        return res.status(201).json(presentInvoice(inv))
-      } catch (e) {
-        if (!isDuplicate(e)) throw e
-        const made = await col('invoices').findOne({ orderId: row.id })
-        if (made) return res.json(presentInvoice(made))
-      }
+    const next = await col('invoices').findOneAndUpdate(
+      { id: inv.id },
+      {
+        $set: {
+          'data.order': order,
+          'data.gstRate': t.gstRate,
+          'data.customerGstin': b.customerGstin ?? inv.data.customerGstin ?? '',
+          'data.notes': b.notes ?? inv.data.notes ?? '',
+          updatedAt: now,
+          updatedBy: req.user.name,
+        },
+        $inc: { revision: 1 },
+      },
+      { returnDocument: 'after' },
+    )
+    if (row) {
+      await updateOrder(row, {
+        name: order.name,
+        phone: order.phone,
+        address: order.address,
+        payment: order.payment,
+        paid,
+        paidAt,
+        lines,
+        subtotal: t.subtotal,
+        discount: t.discount,
+        gst: t.gst,
+        delivery: t.delivery,
+        total: t.total,
+      })
     }
-    fail(409, 'Could not number the invoice, please try again')
+    res.json(await withPayment(next))
   }),
 )
 
 r.get(
   '/invoices',
   staff,
+  allow('viewInvoices'),
   route(async (req, res) => {
     const q = String(req.query.q ?? '').trim()
     const re = new RegExp(escape(q), 'i')
@@ -194,9 +363,12 @@ r.get(
         createdAt: i.createdAt,
         orderId: i.data.order.id,
         name: i.data.order.name,
+        phone: i.data.order.phone,
         total: orders.get(i.orderId)?.total ?? i.data.order.total,
         mode: i.data.order.mode,
         paid: !!orders.get(i.orderId)?.paid,
+        revision: i.revision ?? 0,
+        updatedAt: i.updatedAt ?? null,
       })),
     )
   }),
@@ -207,11 +379,7 @@ r.get(
   staff,
   route(async (req, res) => {
     const inv = (await col('invoices').findOne({ $or: [{ id: Number(req.params.id) }, { number: req.params.id }] })) ?? fail(404, 'Invoice not found')
-    // Payment can change after the invoice is made, so it is read fresh.
-    const out = presentInvoice(inv)
-    const o = await col('orders').findOne({ id: inv.orderId }, { projection: { paid: 1, paidAt: 1, payment: 1 } })
-    if (o) out.order = { ...out.order, paid: !!o.paid, paidAt: o.paidAt, payment: o.payment }
-    res.json(out)
+    res.json(await withPayment(inv))
   }),
 )
 
@@ -242,6 +410,7 @@ r.get(
 r.post(
   '/tables/:id/reservation',
   staff,
+  allow('reserveTables'),
   route(async (req, res) => {
     const { reserved, reservedFor } = pick(req.body, { reserved: ['bool'], reservedFor: ['str', { max: 80 }] })
     const t = await col('tables').findOneAndUpdate(
@@ -259,6 +428,7 @@ r.post(
 r.post(
   '/tables/:id/settle',
   staff,
+  allow('settleTable'),
   route(async (req, res) => {
     const { payment } = pick(req.body, { payment: ['str', { max: 30, def: 'Cash' }] })
     const orders = await col('orders').find({ ...openAt(Date.now() - 16 * 3600_000), tableId: Number(req.params.id) }, { projection: { _id: 0 } }).toArray()
@@ -401,5 +571,29 @@ r.get(
   }),
 )
 
+// Each staff member's orders and sales: today and the last 30 days.
+r.get(
+  '/reports/staff',
+  admin,
+  route(async (_req, res) => {
+    const now = Date.now()
+    const today = dayKey(now)
+    const rows = await col('orders')
+      .find({ waiterId: { $ne: null }, cancelled: false, createdAt: { $gte: now - 30 * 86_400_000 } }, { projection: { _id: 0, waiterId: 1, total: 1, createdAt: 1 } })
+      .toArray()
+    const out = {}
+    for (const o of rows) {
+      const s = (out[o.waiterId] ??= { today: { orders: 0, sales: 0 }, month: { orders: 0, sales: 0 }, last: 0 })
+      s.month.orders += 1
+      s.month.sales += o.total
+      if (dayKey(o.createdAt) === today) {
+        s.today.orders += 1
+        s.today.sales += o.total
+      }
+      s.last = Math.max(s.last, o.createdAt)
+    }
+    res.json(out)
+  }),
+)
 
 export default r

@@ -1,4 +1,5 @@
 import { randomBytes } from 'node:crypto'
+import { config } from './config.js'
 import { col } from './db.js'
 
 export class HttpError extends Error {
@@ -56,6 +57,11 @@ export const pick = (body, spec, { partial = false } = {}) => {
     else if (type === 'int') out[field] = num(body[field], { ...o, int: true })
     else if (type === 'num') out[field] = num(body[field], o)
     else if (type === 'bool') out[field] = bool(body[field], o)
+    else if (type === 'date') {
+      const v = body[field] === null || body[field] === undefined ? '' : String(body[field]).trim()
+      if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) fail(400, `${field} must be a date like 2026-12-31`)
+      out[field] = v
+    }
     else if (type === 'enum') {
       const v = body[field] ?? o.def
       if (!o.values.includes(v)) fail(400, `${field} must be one of: ${o.values.join(', ')}`)
@@ -86,7 +92,7 @@ export const newToken = () => randomBytes(18).toString('base64url')
 // ---- Settings ---------------------------------------------------------------
 
 export const DEFAULT_SETTINGS = {
-  name: 'UTSAV Cafe & Restaurant',
+  name: 'UTSAV Family Restaurant',
   shortName: 'UTSAV',
   tagline: 'Good Food • Great Mood • Together Always',
   phone: '',
@@ -102,11 +108,11 @@ export const DEFAULT_SETTINGS = {
   mapLink: '',
   mapEmbed: '',
   social: { facebook: '', instagram: '', youtube: '', google: '' },
-  logo: '/uploads/seed/brand/logo.png',
+  logo: '/uploads/seed/brand/utsav-logo.png',
   logoWord: '/uploads/seed/brand/logo-word.png',
-  logoIcon: '/uploads/seed/brand/logo-cup.png',
-  logoSplash: '/uploads/seed/brand/logo-splash.png',
-  heroBackground: '/uploads/seed/hero/cafe-bg.webp',
+  logoIcon: '/uploads/seed/brand/utsav-mark.png',
+  logoSplash: '/uploads/seed/brand/utsav-splash.png',
+  heroBackground: '/uploads/seed/ambience/kitchen.webp',
   gstRate: 5,
   deliveryFee: 30,
   freeDeliveryAbove: 499,
@@ -128,3 +134,50 @@ export const saveSettings = async (patch) => {
   await col('settings').updateOne({ _id: 'site' }, { $set: known }, { upsert: true })
   return getSettings()
 }
+
+// ---- Waiter panel permissions (managed by the admin) ---------------------------
+
+/** What a waiter may do. Admins can always do everything. */
+export const DEFAULT_WAITER_PERMISSIONS = {
+  takeDineIn: true,
+  takeTakeaway: true,
+  viewKitchen: true,
+  kitchenSteps: true,
+  markPaid: true,
+  settleTable: true,
+  reserveTables: true,
+  createInvoice: true,
+  editInvoice: false,
+  shareInvoice: true,
+  viewInvoices: true,
+}
+
+export const getWaiterPermissions = async () => {
+  const { _id, ...stored } = (await col('settings').findOne({ _id: 'waiter' })) ?? {}
+  return Object.fromEntries(Object.entries(DEFAULT_WAITER_PERMISSIONS).map(([k, def]) => [k, typeof stored[k] === 'boolean' ? stored[k] : def]))
+}
+
+export const saveWaiterPermissions = async (patch) => {
+  const known = Object.fromEntries(Object.entries(patch ?? {}).filter(([k, v]) => k in DEFAULT_WAITER_PERMISSIONS && typeof v === 'boolean'))
+  await col('settings').updateOne({ _id: 'waiter' }, { $set: known }, { upsert: true })
+  return getWaiterPermissions()
+}
+
+/** Blocks a waiter from an action the admin switched off. */
+export const allow = (perm) => async (req, _res, next) => {
+  try {
+    if (req.user?.role === 'waiter' && !(await getWaiterPermissions())[perm]) fail(403, 'The admin has turned this off for waiters')
+    next()
+  } catch (e) {
+    next(e)
+  }
+}
+
+// ---- Offers ---------------------------------------------------------------------
+
+const dayFmt = new Intl.DateTimeFormat('en-CA', { timeZone: config.timeZone })
+/** Today as YYYY-MM-DD in the restaurant's time zone. */
+export const todayKey = () => dayFmt.format(Date.now())
+
+/** An offer runs from validFrom to validTo (both days included); empty means no limit. */
+export const offerRunning = (o, today = todayKey()) => !!o.active && (!o.validFrom || o.validFrom <= today) && (!o.validTo || o.validTo >= today)
